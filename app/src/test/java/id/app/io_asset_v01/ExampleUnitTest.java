@@ -1,4 +1,4 @@
-package id.oi.io_asset_v01;
+package id.app.io_asset_v01;
 
 import org.junit.Test;
 

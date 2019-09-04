@@ -26,6 +26,12 @@ ext {
     junit = '4.12'
     runner = '1.2.0'
     esspressoCore = '3.2.0'
+
+    playServiceVision = '18.0.0'
+    playServiceMaps = '17.0.0'
+    retrofit = '2.6.1'
+    converterGson = '2.6.1'
+    loggingInterceptor = '4.1.0'
 }
 
 dependencies {
@@ -36,4 +42,10 @@ dependencies {
     testImplementation "junit:junit:${junit}"
     androidTestImplementation "androidx.test:runner:${runner}"
     androidTestImplementation "androidx.test.espresso:espresso-core:${esspressoCore}"
+
+    implementation "com.google.android.gms:play-services-vision:${playServiceVision}"
+    implementation "com.google.android.gms:play-services-maps:${playServiceMaps}"
+    implementation "com.squareup.retrofit2:retrofit:${retrofit}"
+    implementation "com.squareup.retrofit2:converter-gson:${converterGson}"
+    implementation "com.squareup.okhttp3:logging-interceptor:${loggingInterceptor}"
 }

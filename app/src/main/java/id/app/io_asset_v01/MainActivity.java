@@ -1,4 +1,4 @@
-package id.oi.io_asset_v01;
+package id.app.io_asset_v01;
 
 import android.os.Bundle;
 
@@ -20,14 +20,30 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.widget.TextView;
+
+import java.util.HashMap;
+
+import id.app.io_asset_v01.utils.SessionManager;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    SessionManager session;
+    TextView nav_username, nav_userMail;
+    NavigationView navigationView;
+
+    String alias, email;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        session = new SessionManager(getApplicationContext());
+
+        HashMap<String, String> user = session.getUserDetails();
+        alias = user.get(SessionManager.KEY_ALIAS);
+        email = user.get(SessionManager.KEY_EMAIL);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -39,12 +55,18 @@ public class MainActivity extends AppCompatActivity
             }
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
+        nav_username = (TextView) navigationView.getHeaderView(0).findViewById(R.id.nav_username) ;
+        nav_username.setText(alias);
+        nav_userMail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.nav_userMail) ;
+        nav_userMail.setText(email);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
     }
 
     @Override
