@@ -1,10 +1,14 @@
 package id.app.io_asset_v01;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import android.util.Log;
 import android.view.View;
 
 import androidx.core.view.GravityCompat;
@@ -20,8 +24,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.InputStream;
 import java.util.HashMap;
 
 import id.app.io_asset_v01.utils.SessionManager;
@@ -33,7 +40,9 @@ public class MainActivity extends AppCompatActivity
     TextView nav_username, nav_userMail;
     NavigationView navigationView;
 
-    String alias, email;
+    TextView btnLogout;
+
+    String imgUrl,alias, email;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +50,8 @@ public class MainActivity extends AppCompatActivity
         session = new SessionManager(getApplicationContext());
 
         HashMap<String, String> user = session.getUserDetails();
-        alias = user.get(SessionManager.KEY_ALIAS);
+        imgUrl = user.get(SessionManager.KEY_IMAGE);
+                alias= user.get(SessionManager.KEY_ALIAS);
         email = user.get(SessionManager.KEY_EMAIL);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -60,6 +70,7 @@ public class MainActivity extends AppCompatActivity
         nav_username.setText(alias);
         nav_userMail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.nav_userMail) ;
         nav_userMail.setText(email);
+        new DownloadImageFromInternet((ImageView)navigationView.getHeaderView(0).findViewById(R.id.navImageView)).execute(imgUrl);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -94,8 +105,8 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.logoutBtn) {
+            session.logoutUser();
         }
 
         return super.onOptionsItemSelected(item);
@@ -124,5 +135,31 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+    private class DownloadImageFromInternet extends AsyncTask<String, Void, Bitmap> {
+        ImageView navImageView;
+
+        public DownloadImageFromInternet(ImageView imageView) {
+            this.navImageView = imageView;
+            Toast.makeText(getApplicationContext(), "Please wait, it may take a few minute...", Toast.LENGTH_SHORT).show();
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String imageURL = urls[0];
+            Bitmap bimage = null;
+            try {
+                InputStream in = new java.net.URL(imageURL).openStream();
+                bimage = BitmapFactory.decodeStream(in);
+
+            } catch (Exception e) {
+                Log.e("Error Message", e.getMessage());
+                e.printStackTrace();
+            }
+            return bimage;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            navImageView.setImageBitmap(result);
+        }
     }
 }

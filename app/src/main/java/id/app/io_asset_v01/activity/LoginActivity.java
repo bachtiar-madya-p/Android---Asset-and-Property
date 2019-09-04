@@ -140,27 +140,27 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<List<UserSchema>> call, Response<List<UserSchema>> response) {
                 if (response.isSuccessful()) {
 
-                        //UserSchema schema = new UserSchema();
-                        userSchemas = response.body();
-                        //schema = userSchemas.get(0);
-                        String username = userSchemas.get(0).getUsername();
-                        String alias = userSchemas.get(0).getAlias();
-                        String role = userSchemas.get(0).getRole();
-                        String memberCode = userSchemas.get(0).getMemberCode();
-                        String email = userSchemas.get(0).getEmail();
-                        String image = userSchemas.get(0).getImage();
-                        String level = userSchemas.get(0).getLevel();
-                        String department = userSchemas.get(0).getDepartment();
+                    //UserSchema schema = new UserSchema();
+                    userSchemas = response.body();
+                    //schema = userSchemas.get(0);
+                    String username = userSchemas.get(0).getUsername();
+                    String alias = userSchemas.get(0).getAlias();
+                    String role = userSchemas.get(0).getRole();
+                    String memberCode = userSchemas.get(0).getMemberCode();
+                    String email = userSchemas.get(0).getEmail();
+                    String directory = ApiUtils.getDirServer();
+                    String image = directory + userSchemas.get(0).getImage();
+                    String level = userSchemas.get(0).getLevel();
+                    String department = userSchemas.get(0).getDepartment();
 
-                        session.createLoginSession(username, alias, role, memberCode, email, image, level, department);
+                    session.createLoginSession(username, alias, role, memberCode, email, image, level, department);
 
-                        if(session.isLoggedIn())
-                        {
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                            finish();
-                        }
+                    if (session.isLoggedIn()) {
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                        finish();
+                    }
 
                 }
                 loading.dismiss();
