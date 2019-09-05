@@ -3,7 +3,7 @@ package id.app.io_asset_v01.response;
 public class UserSchema {
 
     private String username;
-    private String alias;
+    private String memberName;
     private String role;
     private String memberCode;
     private String email;
@@ -14,9 +14,9 @@ public class UserSchema {
     public UserSchema() {
     }
 
-    public UserSchema(String username, String alias, String role, String memberCode, String email, String image, String level, String department) {
+    public UserSchema(String username, String memberName, String role, String memberCode, String email, String image, String level, String department) {
         this.username = username;
-        this.alias = alias;
+        this.memberName = memberName;
         this.role = role;
         this.memberCode = memberCode;
         this.email = email;
@@ -33,12 +33,12 @@ public class UserSchema {
         this.username = username;
     }
 
-    public String getAlias() {
-        return alias;
+    public String getMemberName() {
+        return memberName;
     }
 
-    public void setAlias(String alias) {
-        this.alias = alias;
+    public void setMemberName(String memberName) {
+        this.memberName = memberName;
     }
 
     public String getRole() {

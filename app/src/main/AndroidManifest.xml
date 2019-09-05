@@ -3,6 +3,9 @@
     package="id.app.io_asset_v01">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -14,7 +17,7 @@
         <activity
             android:name="id.app.io_asset_v01.activity.SplashscreenActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,10 +26,15 @@
         </activity>
 
         <activity android:name="id.app.io_asset_v01.activity.LoginActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"/>
 
         <activity android:name="id.app.io_asset_v01.MainActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity android:name="id.app.io_asset_v01.activity.ProfileActivity"
+            android:theme="@style/AppTheme"/>
+        <activity android:name="id.app.io_asset_v01.activity.ScanQRActivity"
+            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>

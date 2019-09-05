@@ -18,7 +18,7 @@ public class SessionManager {
     private static final String PREF_NAME = "userSession";
     public static final String IS_LOGIN = "status";
     public static final String KEY_USERNAME = "username";
-    public static final String KEY_ALIAS = "alias";
+    public static final String KEY_MEMBERNAME = "membername";
     public static final String KEY_ROLE = "role";
     public static final String KEY_MEMBER_CODE = "memberCode";
     public static final String KEY_EMAIL = "email";
@@ -50,10 +50,10 @@ public class SessionManager {
     /**
      * Create login session
      */
-    public void createLoginSession(String username, String alias, String role, String memberCode, String email, String image, String level, String department) {
+    public void createLoginSession(String username, String membername, String role, String memberCode, String email, String image, String level, String department) {
         editor1.putBoolean(IS_LOGIN, true);
         editor1.putString(KEY_USERNAME, username);
-        editor1.putString(KEY_ALIAS, alias);
+        editor1.putString(KEY_MEMBERNAME, membername);
         editor1.putString(KEY_ROLE, role);
         editor1.putString(KEY_MEMBER_CODE, memberCode);
         editor1.putString(KEY_EMAIL, email);
@@ -85,7 +85,7 @@ public class SessionManager {
     public HashMap<String, String> getUserDetails() {
         HashMap<String, String> user = new HashMap<String, String>();
         user.put(KEY_USERNAME, pref.getString(KEY_USERNAME, null));
-        user.put(KEY_ALIAS, pref.getString(KEY_ALIAS, null));
+        user.put(KEY_MEMBERNAME, pref.getString(KEY_MEMBERNAME, null));
         user.put(KEY_ROLE, pref.getString(KEY_ROLE, null));
         user.put(KEY_MEMBER_CODE, pref.getString(KEY_MEMBER_CODE, null));
         user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));

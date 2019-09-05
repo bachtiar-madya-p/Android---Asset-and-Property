@@ -1,5 +1,6 @@
 package id.app.io_asset_v01;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -25,12 +26,16 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.InputStream;
 import java.util.HashMap;
 
+import id.app.io_asset_v01.activity.LoginActivity;
+import id.app.io_asset_v01.activity.ProfileActivity;
+import id.app.io_asset_v01.activity.ScanQRActivity;
 import id.app.io_asset_v01.utils.SessionManager;
 
 public class MainActivity extends AppCompatActivity
@@ -39,10 +44,8 @@ public class MainActivity extends AppCompatActivity
     SessionManager session;
     TextView nav_username, nav_userMail;
     NavigationView navigationView;
-
-    TextView btnLogout;
-
     String imgUrl,alias, email;
+    LinearLayout actionScanQrCode;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,19 +54,12 @@ public class MainActivity extends AppCompatActivity
 
         HashMap<String, String> user = session.getUserDetails();
         imgUrl = user.get(SessionManager.KEY_IMAGE);
-                alias= user.get(SessionManager.KEY_ALIAS);
+                alias= user.get(SessionManager.KEY_MEMBERNAME);
         email = user.get(SessionManager.KEY_EMAIL);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         nav_username = (TextView) navigationView.getHeaderView(0).findViewById(R.id.nav_username) ;
@@ -77,6 +73,15 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+        actionScanQrCode = (LinearLayout) findViewById(R.id.actionScanBarcode);
+        actionScanQrCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, ScanQRActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+            }
+        });
 
     }
 
@@ -120,6 +125,9 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             // Handle the camera action
+            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {

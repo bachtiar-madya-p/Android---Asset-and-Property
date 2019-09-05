@@ -7,17 +7,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
+import com.google.android.material.snackbar.Snackbar;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.List;
-
 import id.app.io_asset_v01.MainActivity;
 import id.app.io_asset_v01.R;
 import id.app.io_asset_v01.request.LoginRequest;
@@ -34,11 +29,11 @@ public class LoginActivity extends AppCompatActivity {
 
     EditText inpUname, inpPasswrd;
     Button btnLogin;
-
     Context mContext;
     ApiService mApiService;
     ProgressDialog loading;
     SessionManager session;
+    View mView;
     private List<UserSchema> userSchemas;
 
     @Override
@@ -50,12 +45,12 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mView = view;
                 if (validateLogin(inpUname.getText().toString(), inpPasswrd.getText().toString())) {
                     doLogin(inpUname.getText().toString(), inpPasswrd.getText().toString());
                 }
             }
         });
-
     }
 
     private void bindView() {
@@ -82,11 +77,13 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean validateLogin(String uname, String password) {
         if (uname == null || uname.trim().length() == 0) {
-            Toast.makeText(this, "Username is required", Toast.LENGTH_SHORT).show();
+            Snackbar.make(mView, "Username is required", Snackbar.LENGTH_LONG)
+                    .setAction("Warning", null).show();
             return false;
         }
         if (password == null || password.trim().length() == 0) {
-            Toast.makeText(this, "Password is required", Toast.LENGTH_SHORT).show();
+            Snackbar.make(mView, "Password is required", Snackbar.LENGTH_LONG)
+                    .setAction("Warning", null).show();
             return false;
         }
         return true;
@@ -102,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
                 if (response.isSuccessful()) {
-                    loading.dismiss();
+
                     getUserDetails(uname, password);
                     session.createLoginSession(uname);
 
@@ -110,23 +107,24 @@ public class LoginActivity extends AppCompatActivity {
                     try {
                         JSONObject jsonRESULTS = new JSONObject(response.errorBody().string());
                         String message = jsonRESULTS.getString("message");
-                        Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+                        Snackbar.make(mView, message, Snackbar.LENGTH_LONG)
+                                .setAction("Warning", null).show();
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-
+                loading.dismiss();
             }
 
             @Override
             public void onFailure(Call<ServerResponse> call, Throwable t) {
-                Toast.makeText(LoginActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                Snackbar.make(mView, t.getMessage(), Snackbar.LENGTH_LONG)
+                        .setAction("Warning", null).show();
                 loading.dismiss();
             }
         });
-
     }
 
     private void getUserDetails(String uname, String password) {
@@ -140,11 +138,9 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<List<UserSchema>> call, Response<List<UserSchema>> response) {
                 if (response.isSuccessful()) {
 
-                    //UserSchema schema = new UserSchema();
                     userSchemas = response.body();
-                    //schema = userSchemas.get(0);
                     String username = userSchemas.get(0).getUsername();
-                    String alias = userSchemas.get(0).getAlias();
+                    String membername = userSchemas.get(0).getMemberName();
                     String role = userSchemas.get(0).getRole();
                     String memberCode = userSchemas.get(0).getMemberCode();
                     String email = userSchemas.get(0).getEmail();
@@ -153,7 +149,7 @@ public class LoginActivity extends AppCompatActivity {
                     String level = userSchemas.get(0).getLevel();
                     String department = userSchemas.get(0).getDepartment();
 
-                    session.createLoginSession(username, alias, role, memberCode, email, image, level, department);
+                    session.createLoginSession(username, membername, role, memberCode, email, image, level, department);
 
                     if (session.isLoggedIn()) {
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -161,16 +157,15 @@ public class LoginActivity extends AppCompatActivity {
                         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                         finish();
                     }
-
                 }
                 loading.dismiss();
             }
 
             @Override
             public void onFailure(Call<List<UserSchema>> call, Throwable t) {
-                Toast.makeText(LoginActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                Snackbar.make(mView, t.getMessage(), Snackbar.LENGTH_LONG)
+                        .setAction("Warning", null).show();
             }
         });
-
     }
 }

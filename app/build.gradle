@@ -32,6 +32,8 @@ ext {
     retrofit = '2.6.1'
     converterGson = '2.6.1'
     loggingInterceptor = '4.1.0'
+    circleImageView = '2.1.0'
+    cardView = '1.0.0'
 }
 
 dependencies {
@@ -48,4 +50,6 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:${retrofit}"
     implementation "com.squareup.retrofit2:converter-gson:${converterGson}"
     implementation "com.squareup.okhttp3:logging-interceptor:${loggingInterceptor}"
+    implementation "de.hdodenhof:circleimageview:${circleImageView}"
+    implementation "androidx.cardview:cardview:${cardView}"
 }
