@@ -35,6 +35,10 @@
             android:theme="@style/AppTheme"/>
         <activity android:name="id.app.io_asset_v01.activity.ScanQRActivity"
             android:theme="@style/AppTheme"/>
+        <activity android:name="id.app.io_asset_v01.activity.AssetDetailsActivity"
+            android:theme="@style/AppTheme"/>
+        <activity android:name="id.app.io_asset_v01.activity.AssetRegistrationActivity"
+            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>
